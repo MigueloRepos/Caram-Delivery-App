@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Paleta oficial Helados Caram */
+  --color-primary: #0159E0;
+  --color-primary-dark: #02289E;
+  --color-accent: #FCD40A;
+  --color-accent-foreground: #02289E;
+  --color-background: #F6F1EE;
+  --color-surface: #FFFFFF;
+  --color-card: #FFFFFF;
+  --color-secondary: #0591FA;
+  --color-warm: #F7A208;
+  --color-text: #131216;
+  --color-text-muted: #575458;
+  --color-border: #E5DFDA;
+
+  /* Aliases semánticos */
+  --color-foreground: #131216;
+  --color-card-foreground: #131216;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #131216;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary-foreground: #FFFFFF;
+  --color-muted: #EBE5E0;
+  --color-muted-foreground: #575458;
+  --color-input: #E5DFDA;
+  --color-ring: #0159E0;
+
+  --color-whatsapp: #0159E0;
+  --color-whatsapp-foreground: #FFFFFF;
+
+  --font-sans: "Manrope", system-ui, -apple-system, sans-serif;
+  --font-display: "Bricolage Grotesque", "Manrope", sans-serif;
+}
+
+:root {
+  --radius: 1.25rem;
+
+  /* Tokens globales oficiales */
+  --color-primary: #0159E0;
+  --color-primary-dark: #02289E;
+  --color-accent: #FCD40A;
+  --color-background: #F6F1EE;
+  --color-surface: #FFFFFF;
+  --color-secondary: #0591FA;
+  --color-warm: #F7A208;
+  --color-text: #131216;
+  --color-text-muted: #575458;
+  --color-border: #E5DFDA;
+
+  /* Variables del sistema */
+  --primary: #0159E0;
+  --primary-dark: #02289E;
+  --primary-foreground: #FFFFFF;
+  --accent: #FCD40A;
+  --accent-foreground: #02289E;
+  --background: #F6F1EE;
+  --surface: #FFFFFF;
+  --card: #FFFFFF;
+  --card-foreground: #131216;
+  --secondary: #EBF4FE;
+  --secondary-foreground: #02289E;
+  --ice-blue: #0591FA;
+  --warm: #F7A208;
+  --foreground: #131216;
+  --muted: #EBE5E0;
+  --muted-foreground: #575458;
+  --border: #E5DFDA;
+  --input: #E5DFDA;
+  --ring: #0159E0;
+
+  --whatsapp: #0159E0;
+  --whatsapp-green: #25D366;
+  --whatsapp-foreground: #FFFFFF;
+
+  --shadow-soft: 0 4px 18px -2px rgba(19, 18, 22, 0.05), 0 1px 3px rgba(19, 18, 22, 0.04);
+  --shadow-hover: 0 10px 25px -3px rgba(1, 89, 224, 0.12), 0 3px 8px -1px rgba(19, 18, 22, 0.05);
+  --gradient-hero: linear-gradient(150deg, #FFFFFF 0%, #FAF7F5 55%, #EDF5FE 100%);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+.shadow-hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.bg-hero {
+  background: var(--gradient-hero);
+  border: 1px solid var(--color-border);
+}
+
+/* Botón Principal: Azul Caram (#0159E0) con texto blanco */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  min-height: 44px;
+  padding: 0.75rem 1.6rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px -2px rgba(1, 89, 224, 0.28);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: 0 6px 18px -2px rgba(2, 40, 158, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Botón Secundario / Acento: Amarillo Caram (#FCD40A) con texto Azul Profundo (#02289E) */
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  min-height: 44px;
+  padding: 0.75rem 1.6rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  background-color: var(--color-accent);
+  color: var(--color-primary-dark);
+  box-shadow: 0 4px 14px -2px rgba(252, 212, 10, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.btn-accent:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+.btn-accent:active {
+  transform: translateY(0);
+}
+
+/* Botón WhatsApp */
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  min-height: 44px;
+  padding: 0.75rem 1.6rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px -2px rgba(1, 89, 224, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.btn-whatsapp:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: 0 6px 18px -2px rgba(2, 40, 158, 0.38);
+  transform: translateY(-1px);
+}
+
+.btn-whatsapp:active {
+  transform: translateY(0);
+}
+
+.btn-whatsapp:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Chips y Etiquetas */
+.chip {
+  display: inline-block;
+  white-space: nowrap;
+  border-radius: 9999px;
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.15s ease-in-out;
+}
+
+.chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.chip[aria-current="page"] {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  border-color: var(--color-primary);
+  box-shadow: 0 3px 10px -2px rgba(1, 89, 224, 0.3);
+}
+
+/* Enlaces de Navegación */
+.nav-link {
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  transition: color 0.15s ease-in-out, opacity 0.15s;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.nav-link:hover {
+  color: var(--color-primary);
+}
+
+.nav-link[data-status="active"] {
+  color: var(--color-primary);
+  font-weight: 700;
+}

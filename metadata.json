@@ -1,0 +1,6 @@
+{
+  "name": "Helados Caram",
+  "description": "App web interactiva mobile-first para Helados Caram con catálogo de helados y dulces artesanales y pedidos directos por WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
