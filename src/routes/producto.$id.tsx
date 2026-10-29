@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { ArrowLeft, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Page, WhatsAppButton } from "@/components/Shell";
+import { ShareProductButton } from "@/components/ShareProductButton";
 import { PRICE_LABEL, getCategory, getProduct } from "@/lib/catalog";
 import { useCart } from "@/lib/cart";
 
@@ -28,12 +29,20 @@ function Detalle() {
 
   return (
     <Page>
-      <button
-        onClick={() => router.history.back()}
-        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-text-muted cursor-pointer hover:text-text transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" /> Volver
-      </button>
+      <div className="mt-4 flex items-center justify-between">
+        <button
+          onClick={() => router.history.back()}
+          className="inline-flex items-center gap-1 text-sm font-medium text-text-muted cursor-pointer hover:text-text transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" /> Volver
+        </button>
+
+        {cat && (
+          <span className="text-xs font-bold uppercase tracking-wider text-primary">
+            {cat.name}
+          </span>
+        )}
+      </div>
 
       <div className="mt-3 md:grid md:grid-cols-2 md:gap-10 items-start">
         <motion.div
@@ -55,25 +64,28 @@ function Detalle() {
           initial={{ opacity: 0, x: 15 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 md:mt-0"
+          className="mt-6 md:mt-0 space-y-4"
         >
-          {cat && (
-            <Link to="/categoria/$id" params={{ id: cat.id }} className="chip">
-              {cat.name}
-            </Link>
-          )}
-          <h1 className="mt-3 font-display text-3xl md:text-4xl font-extrabold text-primary-dark">
-            {p.name}
-          </h1>
-          <p className="mt-1 text-sm text-text-muted">{p.subtitle}</p>
-          {p.description && (
-            <p className="mt-2.5 text-sm text-text leading-relaxed">{p.description}</p>
-          )}
-          <p className="mt-4 rounded-2xl bg-secondary px-4 py-3 text-xs sm:text-sm font-bold text-primary-dark border border-primary/10">
+          <div>
+            {cat && (
+              <Link to="/categoria/$id" params={{ id: cat.id }} className="chip">
+                {cat.name}
+              </Link>
+            )}
+            <h1 className="mt-2 font-display text-3xl md:text-4xl font-extrabold text-primary-dark">
+              {p.name}
+            </h1>
+            <p className="mt-1 text-sm text-text-muted">{p.subtitle}</p>
+            {p.description && (
+              <p className="mt-2.5 text-sm text-text leading-relaxed">{p.description}</p>
+            )}
+          </div>
+
+          <p className="rounded-2xl bg-secondary px-4 py-3 text-xs sm:text-sm font-bold text-primary-dark border border-primary/10">
             {PRICE_LABEL}
           </p>
 
-          <div className="mt-6 flex items-center gap-4">
+          <div className="flex items-center gap-4 pt-1">
             <span className="text-sm font-bold text-text">Cantidad:</span>
             <div className="flex items-center rounded-full bg-surface border border-border shadow-soft">
               <motion.button
@@ -98,35 +110,45 @@ function Detalle() {
             </div>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => {
-              add(p.id, qty);
-              toast.success(`${qty} x ${p.name} añadido al carrito`);
-            }}
-            className="btn-primary mt-6 w-full cursor-pointer shadow-md"
-          >
-            Añadir al carrito
-          </motion.button>
+          {/* Action Buttons: Add to Cart, WhatsApp Order, and Share Product */}
+          <div className="space-y-2.5 pt-2">
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => {
+                add(p.id, qty);
+                toast.success(`${qty} x ${p.name} añadido al carrito`);
+              }}
+              className="btn-primary w-full cursor-pointer shadow-md"
+            >
+              Añadir al carrito
+            </motion.button>
 
-          {(() => {
-            const singleOrderMessage =
-              `🛒 *CONSULTA DE PRODUCTO — CARAM*\n` +
-              `━━━━━━━━━━━━━━━━━━━━\n\n` +
-              `• Categoría: ${cat?.name ?? "Caram"}\n` +
-              `• Producto: ${p.variant ? `Helado sabor ${p.variant}` : p.name}\n` +
-              `• Cantidad: ${qty} unidad${qty === 1 ? "" : "es"}\n\n` +
-              `━━━━━━━━━━━━━━━━━━━━\n` +
-              `¡Hola Caram! Me gustaría pedir este producto. ¿Me confirman precio y disponibilidad? ¡Gracias!`;
+            {(() => {
+              const singleOrderMessage =
+                `🛒 *CONSULTA DE PRODUCTO — CARAM*\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `• Categoría: ${cat?.name ?? "Caram"}\n` +
+                `• Producto: ${p.variant ? `Helado sabor ${p.variant}` : p.name}\n` +
+                `• Cantidad: ${qty} unidad${qty === 1 ? "" : "es"}\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n` +
+                `¡Hola Caram! Me gustaría pedir este producto. ¿Me confirman precio y disponibilidad? ¡Gracias!`;
 
-            return (
-              <WhatsAppButton
-                message={singleOrderMessage}
-                className="mt-3 w-full"
-              />
-            );
-          })()}
+              return (
+                <WhatsAppButton
+                  message={singleOrderMessage}
+                  className="w-full"
+                />
+              );
+            })()}
+
+            {/* Share Product Button */}
+            <ShareProductButton
+              product={p}
+              categoryName={cat?.name}
+              className="w-full"
+            />
+          </div>
         </motion.div>
       </div>
     </Page>

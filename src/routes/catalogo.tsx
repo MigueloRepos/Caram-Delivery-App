@@ -8,7 +8,7 @@ import {
   getDulcesCategories,
   type Product,
 } from "@/lib/catalog";
-import { Search, X, IceCreamCone, Cake, Sparkles, ArrowRight } from "lucide-react";
+import { Search, X, IceCreamCone, Cake, Sparkles, ArrowRight, Filter } from "lucide-react";
 
 export const Route = createFileRoute("/catalogo")({
   head: () => ({
@@ -30,6 +30,16 @@ export const Route = createFileRoute("/catalogo")({
 });
 
 type FilterType = "todos" | "helados" | "dulces";
+
+const POPULAR_FLAVORS = [
+  "Mantecado",
+  "Tiramisú",
+  "Chocolate",
+  "Fresa",
+  "Tres Leches",
+  "Cupcakes",
+  "Mini Cakes",
+];
 
 export default function Catalogo() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -76,20 +86,21 @@ export default function Catalogo() {
         className="pt-4 pb-2"
       >
         <h1 className="font-display text-3xl font-extrabold md:text-4xl text-primary-dark">
-          Nuestros Productos
+          Catálogo de Productos
         </h1>
         <p className="mt-1 text-xs md:text-sm text-text-muted">
-          Explora nuestros 8 sabores de helados y 10 especialidades de dulcería artesanal.
+          Encuentra rápidamente cualquier sabor de helado o postre artesanal por su nombre.
         </p>
       </motion.div>
 
       {/* Sticky Search Bar Section */}
       <div className="sticky top-[53px] z-20 -mx-5 bg-background/95 px-5 py-3 backdrop-blur-md border-b border-border shadow-xs transition-all">
+        {/* Prominent Search Input Box */}
         <div className="relative">
           <label htmlFor="product-search" className="sr-only">
-            Buscar productos
+            Buscar helados o postres por nombre
           </label>
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-text-muted">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-primary">
             <Search className="h-4 w-4" />
           </div>
           <input
@@ -97,8 +108,8 @@ export default function Catalogo() {
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Buscar por sabor o dulce (ej: mantecado, cupcake, chocolate)..."
-            className="w-full rounded-full border border-border bg-surface py-2.5 pl-10 pr-10 text-xs md:text-sm text-text placeholder:text-text-muted shadow-soft focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+            placeholder="Buscar por sabor de helado o dulce (ej. Mantecado, Tiramisú, Cupcakes, Chocolate)..."
+            className="w-full rounded-full border-2 border-primary/30 bg-surface py-2.5 pl-10 pr-10 text-xs md:text-sm font-medium text-text placeholder:text-text-muted shadow-soft focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
           />
           {searchQuery && (
             <motion.button
@@ -114,48 +125,51 @@ export default function Catalogo() {
           )}
         </div>
 
-        {/* Quick Filter Tabs */}
-        <div className="mt-2.5 flex items-center gap-1.5 overflow-x-auto pb-0.5" role="tablist">
-          <motion.button
-            whileTap={{ scale: 0.96 }}
-            type="button"
-            onClick={() => setActiveFilter("todos")}
-            className={`chip text-[11px] py-1 px-3 cursor-pointer transition-colors ${
-              activeFilter === "todos"
-                ? "bg-primary text-white font-bold border-primary shadow-xs"
-                : "hover:bg-surface"
-            }`}
-          >
-            Todos ({PRODUCTS.length})
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.96 }}
-            type="button"
-            onClick={() => setActiveFilter("helados")}
-            className={`chip text-[11px] py-1 px-3 flex items-center gap-1 cursor-pointer transition-colors ${
-              activeFilter === "helados"
-                ? "bg-primary text-white font-bold border-primary shadow-xs"
-                : "hover:bg-surface"
-            }`}
-          >
-            <IceCreamCone className="h-3 w-3" />
-            <span>Helados ({heladosCount})</span>
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.96 }}
-            type="button"
-            onClick={() => setActiveFilter("dulces")}
-            className={`chip text-[11px] py-1 px-3 flex items-center gap-1 cursor-pointer transition-colors ${
-              activeFilter === "dulces"
-                ? "bg-primary text-white font-bold border-primary shadow-xs"
-                : "hover:bg-surface"
-            }`}
-          >
-            <Cake className="h-3 w-3" />
-            <span>Dulcería ({dulcesCount})</span>
-          </motion.button>
+        {/* Quick Filter Tabs & Quick Flavor Chips */}
+        <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2">
+          {/* Main Category Tabs */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5" role="tablist">
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              type="button"
+              onClick={() => setActiveFilter("todos")}
+              className={`chip text-[11px] py-1 px-3 cursor-pointer transition-colors ${
+                activeFilter === "todos"
+                  ? "bg-primary text-white font-bold border-primary shadow-xs"
+                  : "hover:bg-surface"
+              }`}
+            >
+              Todos ({PRODUCTS.length})
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              type="button"
+              onClick={() => setActiveFilter("helados")}
+              className={`chip text-[11px] py-1 px-3 flex items-center gap-1 cursor-pointer transition-colors ${
+                activeFilter === "helados"
+                  ? "bg-primary text-white font-bold border-primary shadow-xs"
+                  : "hover:bg-surface"
+              }`}
+            >
+              <IceCreamCone className="h-3 w-3" />
+              <span>Helados ({heladosCount})</span>
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              type="button"
+              onClick={() => setActiveFilter("dulces")}
+              className={`chip text-[11px] py-1 px-3 flex items-center gap-1 cursor-pointer transition-colors ${
+                activeFilter === "dulces"
+                  ? "bg-primary text-white font-bold border-primary shadow-xs"
+                  : "hover:bg-surface"
+              }`}
+            >
+              <Cake className="h-3 w-3" />
+              <span>Dulcería ({dulcesCount})</span>
+            </motion.button>
+          </div>
 
-          {/* Quick Clear when filtered */}
+          {/* Quick Clear Button */}
           {(searchQuery || activeFilter !== "todos") && (
             <motion.button
               initial={{ opacity: 0 }}
@@ -164,11 +178,27 @@ export default function Catalogo() {
                 setSearchQuery("");
                 setActiveFilter("todos");
               }}
-              className="ml-auto text-[11px] font-semibold text-primary hover:underline shrink-0 pl-2 cursor-pointer"
+              className="text-[11px] font-bold text-primary hover:underline shrink-0 cursor-pointer"
             >
-              Restablecer
+              Restablecer filtros
             </motion.button>
           )}
+        </div>
+
+        {/* Popular Flavor Suggestions Bar */}
+        <div className="mt-2 flex items-center gap-1.5 overflow-x-auto text-[10px] text-text-muted">
+          <span className="font-bold uppercase tracking-wider text-primary shrink-0">
+            Sugerencias:
+          </span>
+          {POPULAR_FLAVORS.map((flavor) => (
+            <button
+              key={flavor}
+              onClick={() => setSearchQuery(flavor)}
+              className="rounded-full bg-surface border border-border px-2 py-0.5 text-text hover:border-primary hover:text-primary transition cursor-pointer shrink-0"
+            >
+              {flavor}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -193,8 +223,8 @@ export default function Catalogo() {
           </span>
 
           {searchQuery && (
-            <span className="text-[11px] text-primary font-medium">
-              Filtrado en tiempo real
+            <span className="text-[11px] text-primary font-bold">
+              Búsqueda activa
             </span>
           )}
         </div>
@@ -208,27 +238,25 @@ export default function Catalogo() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
-              className="mt-8 rounded-3xl bg-surface border border-border p-8 text-center shadow-soft"
+              className="mt-8 rounded-3xl bg-surface border border-border p-8 text-center shadow-soft max-w-md mx-auto"
             >
-              <Search className="mx-auto h-10 w-10 text-text-muted/50" />
+              <Search className="mx-auto h-10 w-10 text-primary/60" />
               <h3 className="mt-3 font-display text-lg font-bold text-primary-dark">
-                No se encontraron productos
+                No encontramos productos con "{searchQuery}"
               </h3>
               <p className="mt-1 text-xs text-text-muted">
-                No encontramos coincidencias para "{searchQuery}". Intenta con otro término o explora nuestras categorías.
+                Intenta buscar por otro nombre de sabor o selecciona una de nuestras sugerencias.
               </p>
               <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-                {["Mantecado", "Chocolate", "Cupcakes", "Cake", "Merenguitos", "Tiramisú"].map(
-                  (suggestion) => (
-                    <button
-                      key={suggestion}
-                      onClick={() => setSearchQuery(suggestion)}
-                      className="chip text-[11px] py-1 px-2.5 cursor-pointer hover:bg-secondary"
-                    >
-                      {suggestion}
-                    </button>
-                  )
-                )}
+                {POPULAR_FLAVORS.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    onClick={() => setSearchQuery(suggestion)}
+                    className="chip text-[11px] py-1 px-2.5 cursor-pointer hover:bg-secondary"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
               </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}

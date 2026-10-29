@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { ArrowRight, Cake, IceCreamCone, Sparkles, ShieldCheck, Truck, Clock } from "lucide-react";
 import { Page, ProductCard, WhatsAppButton } from "@/components/Shell";
 import { HowToOrder } from "@/components/HowToOrder";
+import { PromoBanner } from "@/components/PromoBanner";
 import { CATEGORIES, PRODUCTS, getDulcesCategories } from "@/lib/catalog";
 import { BRAND, WHATSAPP_DISPLAY } from "@/lib/config";
 import hero from "@/assets/helados.jpg";
@@ -17,8 +18,11 @@ function Index() {
 
   return (
     <Page>
+      {/* Sticky Promotional Banner Component */}
+      <PromoBanner />
+
       {/* Hero Principal con Jerarquía Visual, Paleta Oficial y Animaciones Motion */}
-      <section className="mt-6 overflow-hidden rounded-[2.5rem] bg-hero border border-border md:grid md:grid-cols-12 md:items-center shadow-soft">
+      <section className="mt-4 overflow-hidden rounded-[2.5rem] bg-hero border border-border md:grid md:grid-cols-12 md:items-center shadow-soft">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
