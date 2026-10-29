@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Home, LayoutGrid, IceCreamCone, ShoppingBag, MessageCircle, Cake, Sparkles } from "lucide-react";
+import { Home, LayoutGrid, IceCreamCone, ShoppingBag, MessageCircle, Cake, Sparkles, Truck } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { BRAND, WHATSAPP_DISPLAY, SCHEDULE, DELIVERY, whatsappUrl } from "@/lib/config";
 import type { Product } from "@/lib/catalog";
 import { PRICE_LABEL } from "@/lib/catalog";
+import { ShareProductButton } from "@/components/ShareProductButton";
 
 export function Logo() {
   return (
@@ -257,7 +258,8 @@ export function ProductCard({ p }: { p: Product }) {
       className="group flex flex-col justify-between overflow-hidden rounded-3xl bg-surface border border-border/80 shadow-soft transition-colors duration-200 hover:border-primary/40 hover:shadow-hover"
     >
       <div>
-        <Link to="/producto/$id" params={{ id: p.id }} className="block overflow-hidden bg-background/50">
+        {/* 1. Imagen del producto */}
+        <Link to="/producto/$id" params={{ id: p.id }} className="block overflow-hidden bg-background/50 relative">
           <img
             src={p.image}
             alt={p.name}
@@ -266,30 +268,49 @@ export function ProductCard({ p }: { p: Product }) {
             height={1024}
             className="aspect-square w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
+          <span className="absolute top-2.5 left-2.5 rounded-full bg-secondary/90 backdrop-blur-xs px-2.5 py-0.5 text-[10px] font-bold text-primary-dark uppercase tracking-wider">
+            {p.category === "helados" ? "Helado" : "Dulce"}
+          </span>
         </Link>
-        <div className="p-4">
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <span className="inline-block rounded-full bg-secondary px-2.5 py-0.5 text-[10px] font-bold text-primary-dark uppercase tracking-wider">
-              {p.category === "helados" ? "Helado" : "Dulce"}
-            </span>
-          </div>
+
+        <div className="p-4 space-y-2">
+          {/* 2. Nombre del producto */}
           <Link
             to="/producto/$id"
             params={{ id: p.id }}
-            className="font-display text-base font-bold leading-tight text-text hover:text-primary transition-colors block line-clamp-1"
+            className="font-display text-base font-extrabold leading-tight text-text hover:text-primary transition-colors block line-clamp-1"
           >
             {p.name}
           </Link>
-          <p className="mt-1 text-xs text-text-muted line-clamp-1">
+
+          {/* 3. Descripción */}
+          <p className="text-xs text-text-muted line-clamp-2 leading-relaxed">
             {p.description || p.subtitle}
           </p>
-          <p className="mt-2 text-[11px] font-medium text-text-muted">
+
+          {/* 4. Precio */}
+          <p className="text-xs font-bold text-primary-dark">
             {PRICE_LABEL}
           </p>
+
+          {/* 5. Domicilio disponible */}
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-secondary/60 px-2.5 py-1 text-[10px] font-bold text-primary-dark border border-primary/10">
+            <Truck className="h-3 w-3 text-primary shrink-0" />
+            <span>Domicilio disponible</span>
+          </div>
         </div>
       </div>
 
-      <div className="p-4 pt-0">
+      {/* Action Buttons Container */}
+      <div className="p-4 pt-0 space-y-2">
+        {/* 6. Botón compartir */}
+        <ShareProductButton
+          product={p}
+          categoryName={p.category === "helados" ? "Helados Artesanales" : "Dulcería"}
+          className="w-full"
+        />
+
+        {/* 7. Botón añadir al carrito */}
         <motion.button
           onClick={() => add(p.id)}
           whileTap={{ scale: 0.95 }}
